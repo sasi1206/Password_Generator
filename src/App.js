@@ -4,7 +4,7 @@ import { useState , useEffect} from "react";
 function App() {
   const[rangeValue,setRangeValue]=useState(1);
   const[pass,setPass] = useState('')
-  const[Options,setOptions]=useState([
+  const Options = [
     {
       Id:1,
       OptionName:"Upper Case"
@@ -21,11 +21,16 @@ function App() {
       Id:4,
       OptionName:"Numbers"
     }
-  ]);
-  const[UpperCase,setUpperCase] = useState(false);
-  const[LowerCase,setLowerCase] = useState(false);
-  const[Numbers,setNumbers] = useState(false);
-  const[SpecialCharacters,setSpecialCharacters] = useState(false);
+  ];
+  const[CheckUpperCase,setCheckUpperCase] = useState(false);
+  const[CheckLowerCase,setCheckLowerCase] = useState(false);
+  const[CheckNumbers,setCheckNumbers] = useState(false);
+  const[CheckSpecialCharacters,setCheckSpecialCharacters] = useState(false);
+  const UpperCase = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+  const LowerCase = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+  const Numbers = [1,2,3,4,5,6,7,8,9,0];
+  const SpecialCharacters = ['`','~','!','@','#','$','%','^','&','*','(',')','-','_','=','+','[',']','/','|',':',';','"',"'"];
+
   let string ='';
   const border = document.querySelector(".input input");
 
@@ -38,26 +43,48 @@ function App() {
     }
   },[rangeValue])
 
-  const handleCheck = (id)=>{
-    const filterArray = Options.find((option)=> option.Id === id);
-   return filterArray.OptionName == 'Upper Case' ? setUpperCase(!UpperCase) : filterArray.OptionName == 'Lower Case' ? setLowerCase(!LowerCase) : filterArray.OptionName == 'Special Characters' ? setSpecialCharacters(!SpecialCharacters) : filterArray.OptionName == 'Numbers' ? setNumbers(!Numbers) : "nope";
+  let newArray = [];
+
+  function handleCheck(id){
+    const filterArray = Options.find(option=>option.Id === id);
+    if(filterArray.OptionName == 'Upper Case'){
+      setCheckUpperCase(!CheckUpperCase);
+      console.log(newArray);
+      newArray = [...newArray,...UpperCase];
+      console.log(newArray);
+    }
+    else if(filterArray.OptionName == 'Lower Case'){
+      setCheckLowerCase (!CheckLowerCase);
+      console.log(newArray);
+      newArray = [...newArray,...LowerCase];
+      console.log(newArray);
+      }
+      else if(filterArray.OptionName == 'Special Characters'){
+      setCheckSpecialCharacters(!CheckSpecialCharacters);
+      console.log(newArray);
+      newArray = [...newArray,...SpecialCharacters];
+      console.log(newArray);
+    }
+    else if(filterArray.OptionName == 'Numbers'){
+      setCheckNumbers (!CheckNumbers);
+      console.log(newArray);
+      newArray = [...newArray,...Numbers];
+      console.log(newArray);
+    }
+    console.log(newArray);
   }
 
-  const GeneratePassword=(min,max,UnwantedValueStart,UnwantedValueStop)=>{
-
+  const GeneratePassword=()=>{
+    console.log(newArray);
     for(let i=1;i<=rangeValue;i++){
-      const rand = Math.floor(Math.random() * (max - min + 1) + min);
-    if(rand >= UnwantedValueStart  && rand <= UnwantedValueStop){ console.log(UnwantedValueStart,UnwantedValueStop)}
-      const char = String.fromCharCode(rand);
+      const rand = Math.floor(Math.random() * newArray.length);
+      console.log(rand)
+      const char = newArray[rand];
       string=string + char;
+      console.log(string);
     }
     setPass(string)
-  }
-
-  const MainFunction = ()=>{
-      if(UpperCase && LowerCase && SpecialCharacters && Numbers) GeneratePassword(21,122);
-      else if(Numbers && LowerCase ) GeneratePassword(48,122,58,96);
-      else setPass('')
+    console.log(newArray);
   }
 
   return (
@@ -101,7 +128,7 @@ function App() {
           </section>
           <button 
             className="gen"
-            onClick={MainFunction}  
+            onClick={GeneratePassword}  
           >Generate Password</button>
         </form>
       </main>

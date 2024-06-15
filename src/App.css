@@ -61,6 +61,7 @@
 .options input[type="checkbox"]{
   accent-color: #ef233c;
   margin: 10px;
+  cursor: pointer;
 }
 .gen{
   margin: 10px auto 0;
