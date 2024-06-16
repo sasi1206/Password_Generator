@@ -43,42 +43,32 @@ function App() {
     }
   },[rangeValue])
 
-  let newArray = [];
-
   function handleCheck(id){
     const filterArray = Options.find(option=>option.Id === id);
     if(filterArray.OptionName == 'Upper Case'){
       setCheckUpperCase(!CheckUpperCase);
-      console.log(newArray);
-      newArray = [...newArray,...UpperCase];
-      console.log(newArray);
     }
     else if(filterArray.OptionName == 'Lower Case'){
       setCheckLowerCase (!CheckLowerCase);
-      console.log(newArray);
-      newArray = [...newArray,...LowerCase];
-      console.log(newArray);
       }
       else if(filterArray.OptionName == 'Special Characters'){
       setCheckSpecialCharacters(!CheckSpecialCharacters);
-      console.log(newArray);
-      newArray = [...newArray,...SpecialCharacters];
-      console.log(newArray);
     }
     else if(filterArray.OptionName == 'Numbers'){
       setCheckNumbers (!CheckNumbers);
-      console.log(newArray);
-      newArray = [...newArray,...Numbers];
-      console.log(newArray);
     }
-    console.log(newArray);
   }
 
   const GeneratePassword=()=>{
-    console.log(newArray);
+    let newArray=[];
+    if(CheckUpperCase) newArray = [...newArray,...UpperCase];
+    if(CheckLowerCase) newArray = [...newArray,...LowerCase];
+    if(CheckNumbers) newArray = [...newArray,...Numbers];
+    if(CheckSpecialCharacters) newArray = [...newArray,...SpecialCharacters];
+
     for(let i=1;i<=rangeValue;i++){
       const rand = Math.floor(Math.random() * newArray.length);
-      console.log(rand)
+      console.log(rand);
       const char = newArray[rand];
       string=string + char;
       console.log(string);
