@@ -1,9 +1,12 @@
 import { FaCopy } from "react-icons/fa";
-import { useState , useEffect} from "react";
+import { useState , useEffect } from "react";
+import Message from "./message.js";
 
 function App() {
   const[rangeValue,setRangeValue]=useState(1);
-  const[pass,setPass] = useState('')
+  const[pass,setPass] = useState('');
+  const[success,setSuccess] = useState(false);
+  const[error,setError] = useState(false);
   const Options = [
     {
       Id:1,
@@ -32,6 +35,7 @@ function App() {
   const SpecialCharacters = ['`','~','!','@','#','$','%','^','&','*','(',')','-','_','=','+','[',']','/','|',':',';','"',"'"];
 
   let string ='';
+  let newArray=[];
   const border = document.querySelector(".input input");
 
   useEffect(()=>{
@@ -45,36 +49,45 @@ function App() {
 
   function handleCheck(id){
     const filterArray = Options.find(option=>option.Id === id);
-    if(filterArray.OptionName == 'Upper Case'){
-      setCheckUpperCase(!CheckUpperCase);
+    if(filterArray.OptionName == 'Upper Case')setCheckUpperCase(!CheckUpperCase);
+    else if(filterArray.OptionName == 'Lower Case')
+    setCheckLowerCase (!CheckLowerCase);
+    else if(filterArray.OptionName == 'Special Characters')setCheckSpecialCharacters(!CheckSpecialCharacters);
+    else if(filterArray.OptionName == 'Numbers')setCheckNumbers (!CheckNumbers);
+  }
+  
+  const GeneratePassword=()=>{
+    if(CheckUpperCase){
+      newArray = [...newArray,...UpperCase]; 
     }
-    else if(filterArray.OptionName == 'Lower Case'){
-      setCheckLowerCase (!CheckLowerCase);
+    if(CheckLowerCase){
+      newArray = [...newArray,...LowerCase];
+    } 
+    if(CheckNumbers){
+      newArray = [...newArray,...Numbers];
+    } 
+    if(CheckSpecialCharacters){
+      newArray = [...newArray,...SpecialCharacters]; 
+    } 
+
+    if(newArray.length === 0){
+      setPass(' ');
+      setSuccess(false);
+      setError(true);
+    }
+    else{
+      for(let i=1;i<=rangeValue;i++){
+        const rand = Math.floor(Math.random() * newArray.length);
+        const char = newArray[rand];
+        string=string + char;
       }
-      else if(filterArray.OptionName == 'Special Characters'){
-      setCheckSpecialCharacters(!CheckSpecialCharacters);
-    }
-    else if(filterArray.OptionName == 'Numbers'){
-      setCheckNumbers (!CheckNumbers);
+      setPass(string)
     }
   }
 
-  const GeneratePassword=()=>{
-    let newArray=[];
-    if(CheckUpperCase) newArray = [...newArray,...UpperCase];
-    if(CheckLowerCase) newArray = [...newArray,...LowerCase];
-    if(CheckNumbers) newArray = [...newArray,...Numbers];
-    if(CheckSpecialCharacters) newArray = [...newArray,...SpecialCharacters];
-
-    for(let i=1;i<=rangeValue;i++){
-      const rand = Math.floor(Math.random() * newArray.length);
-      console.log(rand);
-      const char = newArray[rand];
-      string=string + char;
-      console.log(string);
-    }
-    setPass(string)
-    console.log(newArray);
+  const CopyToClipboard = ()=>{
+    navigator.clipboard.writeText(pass);
+    if(newArray.length > 0) setSuccess(true)
   }
 
   return (
@@ -88,18 +101,17 @@ function App() {
               disabled
               value={pass}
             />
-            <button><FaCopy/></button>
+            <button onClick={CopyToClipboard}><FaCopy/></button>
           </section>
           <section className="slider">
             <label >Password Length</label>
             <input
-              key={1}
               type="range"
               onChange={(e)=>setRangeValue(e.target.value)}
               value={rangeValue}
               min={1}
               max={20}
-            /><p key={2}>{rangeValue}</p>
+            /><p>{rangeValue}</p>
           </section>
           <section className="options">
             <label className="tit">Password Options</label>
@@ -121,6 +133,18 @@ function App() {
             onClick={GeneratePassword}  
           >Generate Password</button>
         </form>
+        {
+          success && <Message
+          content="Your Password Is Copied"
+          color="#52b788"
+        />
+        }
+        {
+          error && <Message
+          content="Please Select One of the Options"
+          color="#ef233c"
+          />
+        }
       </main>
     </div>
   );

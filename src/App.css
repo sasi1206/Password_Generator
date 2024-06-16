@@ -8,8 +8,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* display: grid;
-  place-content: center; */
 }
 .con{
   padding: 20px;
@@ -28,13 +26,13 @@
 .input input{
   padding: 10px;
   width: 90%;
-  border: .1rem solid black;
+  border: 2px solid black;
   border-radius: 5px;
   background: transparent;
 }
 .input button{
   position: absolute;
-  top: 16%;
+  top: 17%;
   right: 5%;
   border: none;
   background-color: transparent;
@@ -73,4 +71,40 @@
   color: #FFF;
   cursor: pointer;
   font-weight: 600;
+}
+.error-container{
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin:  10px;
+  padding: 10px;
+  border-radius: 4px;
+  color: #FFF;
+  animation: slide 1s ease-in-out 0s 1 backwards backwards;
+}
+.error-container button{
+  top: 50%;
+  margin: 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.error-container button .icon{
+  color: #FFF;
+  position: relative;
+  top: 1px;
+}
+@keyframes slide{
+  0%{
+    right: -100px;
+  }
+  50%{
+    right: 0;
+  }
+  100%{
+    right: -100px;
+  }
+}
+::-webkit-scrollbar{
+  visibility: hidden;
 }
