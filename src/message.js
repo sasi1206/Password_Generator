@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaX } from "react-icons/fa6";
 
 const Message = ({content,color}) => {
   return (
@@ -9,7 +8,6 @@ const Message = ({content,color}) => {
     }}>
         <form onSubmit={(e)=>e.preventDefault()}> 
             <label>{content}</label>
-            <button><FaX className="icon"/></button>
           </form>
     </div>
   )

@@ -49,11 +49,11 @@ function App() {
 
   function handleCheck(id){
     const filterArray = Options.find(option=>option.Id === id);
-    if(filterArray.OptionName == 'Upper Case')setCheckUpperCase(!CheckUpperCase);
-    else if(filterArray.OptionName == 'Lower Case')
+    if(filterArray.OptionName === 'Upper Case')setCheckUpperCase(!CheckUpperCase);
+    else if(filterArray.OptionName === 'Lower Case')
     setCheckLowerCase (!CheckLowerCase);
-    else if(filterArray.OptionName == 'Special Characters')setCheckSpecialCharacters(!CheckSpecialCharacters);
-    else if(filterArray.OptionName == 'Numbers')setCheckNumbers (!CheckNumbers);
+    else if(filterArray.OptionName === 'Special Characters')setCheckSpecialCharacters(!CheckSpecialCharacters);
+    else if(filterArray.OptionName === 'Numbers')setCheckNumbers (!CheckNumbers);
   }
   
   const GeneratePassword=()=>{
@@ -76,6 +76,8 @@ function App() {
       setError(true);
     }
     else{
+      setSuccess(false);
+      setError(false);
       for(let i=1;i<=rangeValue;i++){
         const rand = Math.floor(Math.random() * newArray.length);
         const char = newArray[rand];
@@ -87,7 +89,8 @@ function App() {
 
   const CopyToClipboard = ()=>{
     navigator.clipboard.writeText(pass);
-    if(newArray.length > 0) setSuccess(true)
+    setSuccess(true);
+    setError(false);
   }
 
   return (
