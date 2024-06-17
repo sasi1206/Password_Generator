@@ -7,6 +7,7 @@ function App() {
   const[pass,setPass] = useState('');
   const[success,setSuccess] = useState(false);
   const[error,setError] = useState(false);
+  const[isCopyEmpty,setIsCopyEmpty] = useState(false);
   const Options = [
     {
       Id:1,
@@ -71,9 +72,10 @@ function App() {
     } 
 
     if(newArray.length === 0){
-      setPass(' ');
+      setPass('');
       setSuccess(false);
       setError(true);
+      setTimeout(()=>setError(false),3000);
     }
     else{
       setSuccess(false);
@@ -83,14 +85,23 @@ function App() {
         const char = newArray[rand];
         string=string + char;
       }
-      setPass(string)
+      setPass(string);
     }
   }
 
   const CopyToClipboard = ()=>{
-    navigator.clipboard.writeText(pass);
-    setSuccess(true);
-    setError(false);
+    if(pass.length === 0){
+      setSuccess(false); 
+      setError(false);
+      setIsCopyEmpty(true);
+      setTimeout(()=>setIsCopyEmpty(false),3000);
+    }
+    else{
+      navigator.clipboard.writeText(pass);
+      setSuccess(true);
+      setError(false);
+      setTimeout(()=>setSuccess(false),3000);
+    }
   }
 
   return (
@@ -146,6 +157,12 @@ function App() {
           error && <Message
           content="Please Select One of the Options"
           color="#ef233c"
+          />
+        }
+        {
+          isCopyEmpty && <Message 
+            content="Cannot Copy Empty Password"
+            color="#ef233c"
           />
         }
       </main>
