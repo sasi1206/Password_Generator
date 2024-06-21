@@ -1,6 +1,6 @@
 import { FaCopy } from "react-icons/fa";
 import { useState , useEffect } from "react";
-import Message from "./message.js";
+import Message from "./message.jsx";
 
 function App() {
   const[rangeValue,setRangeValue]=useState(1);
