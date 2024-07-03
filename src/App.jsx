@@ -8,32 +8,32 @@ function App() {
   const[success,setSuccess] = useState(false);
   const[error,setError] = useState(false);
   const[isCopyEmpty,setIsCopyEmpty] = useState(false);
-  const Options = [
+  const[Options,setOptions] = useState([
     {
       Id:1,
-      OptionName:"Upper Case"
+      OptionName:"Upper Case",
+      IsChecked:false,
+      Value:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     },
     {
       Id:2,
-      OptionName:"Lower Case"
+      OptionName:"Lower Case",
+      IsChecked:false,
+      Value:['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
     },
     {
       Id:3,
-      OptionName:"Special Characters"
+      OptionName:"Special Characters",
+      IsChecked:false,
+      Value:[1,2,3,4,5,6,7,8,9,0]
     },
     {
       Id:4,
-      OptionName:"Numbers"
+      OptionName:"Numbers",
+      IsChecked:false,
+      Value:['`','~','!','@','#','$','%','^','&','*','(',')','-','_','=','+','[',']','/','|',':',';','"',"'"]
     }
-  ];
-  const[CheckUpperCase,setCheckUpperCase] = useState(false);
-  const[CheckLowerCase,setCheckLowerCase] = useState(false);
-  const[CheckNumbers,setCheckNumbers] = useState(false);
-  const[CheckSpecialCharacters,setCheckSpecialCharacters] = useState(false);
-  const UpperCase = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-  const LowerCase = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-  const Numbers = [1,2,3,4,5,6,7,8,9,0];
-  const SpecialCharacters = ['`','~','!','@','#','$','%','^','&','*','(',')','-','_','=','+','[',']','/','|',':',';','"',"'"];
+  ]);
 
   let string ='';
   let newArray=[];
@@ -41,36 +41,24 @@ function App() {
 
   useEffect(()=>{
     if(border){
-      if(rangeValue <= 5) border.style.border = "2px solid red";
-      else if(rangeValue <=10 && rangeValue > 5) border.style.border = "2px solid #fffe7a";
-      else if(rangeValue <=15 && rangeValue > 10) border.style.border = "2px solid lime";
-      else border.style.border = "2px solid #B8252A";
+      const onlyTrue = Options.filter((option)=>option.IsChecked === true);
+      if(onlyTrue.length === 1) border.style.border = "2px solid red";//red
+      else if(onlyTrue.length === 2)border.style.border = "2px solid #fffe7a"; //yellow
+      else if(onlyTrue.length === 3) border.style.border = "2px solid lime"; //green
+      else if(onlyTrue.length === 4) border.style.border = "2px solid #B8252A"; //dark red
     }
-  },[rangeValue])
+  },[Options])// eslint-disable-line react-hooks/exhaustive-deps
 
   function handleCheck(id){
-    const filterArray = Options.find(option=>option.Id === id);
-    if(filterArray.OptionName === 'Upper Case')setCheckUpperCase(!CheckUpperCase);
-    else if(filterArray.OptionName === 'Lower Case')
-    setCheckLowerCase (!CheckLowerCase);
-    else if(filterArray.OptionName === 'Special Characters')setCheckSpecialCharacters(!CheckSpecialCharacters);
-    else if(filterArray.OptionName === 'Numbers')setCheckNumbers (!CheckNumbers);
+    const SpecificArray = Options.map((option)=> option.Id === id ? { ...option,IsChecked:!option.IsChecked} : option);
+    setOptions(SpecificArray);
   }
   
   const GeneratePassword=()=>{
-    if(CheckUpperCase){
-      newArray = [...newArray,...UpperCase]; 
-    }
-    if(CheckLowerCase){
-      newArray = [...newArray,...LowerCase];
-    } 
-    if(CheckNumbers){
-      newArray = [...newArray,...Numbers];
-    } 
-    if(CheckSpecialCharacters){
-      newArray = [...newArray,...SpecialCharacters]; 
-    } 
-
+    const onlyTrue = Options.filter((option)=>option.IsChecked === true);
+    onlyTrue.forEach((option)=>{
+      newArray = [...newArray,...option.Value]
+    })
     if(newArray.length === 0){
       setPass('');
       setSuccess(false);
